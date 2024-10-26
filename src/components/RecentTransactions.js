@@ -1,4 +1,6 @@
 import React from "react";
+import { useStore } from '@nanostores/react';
+import { transactionsStore } from '../stores/transactionStore';
 import {
   Table,
   TableBody,
@@ -9,7 +11,8 @@ import {
   Paper,
 } from "@mui/material";
 
-function RecentTransactions({ transactions }) {
+function RecentTransactions() {
+  const transactions = useStore(transactionsStore);
   const recentTransactions = transactions
     .slice()
     .sort((a, b) => new Date(b.date) - new Date(a.date))

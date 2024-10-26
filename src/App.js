@@ -20,6 +20,8 @@ import BudgetAlert from './components/BudgetAlert'; // Importar BudgetAlert
 import Recommendations from './components/Recommendations';
 import AnalysisGraph from './components/AnalysisGraph';
 import Statistics from './components/Statistics';
+import BalanceOverTime from './components/BalanceOverTime';
+import RecentTransactions from './components/RecentTransactions';
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
@@ -69,6 +71,9 @@ function App() {
                 <Route path="/support" element={<SupportPage />} />
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/statistics" element={<Statistics />} />
+                <Route path="/balance" element={<BalanceOverTime />} />
+                <Route path="/recentTransactions" element={<RecentTransactions />} />
+
               </Route>
 
               {/* Public routes */}

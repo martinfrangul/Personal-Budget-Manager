@@ -1,37 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useStore } from "@nanostores/react";
-import { transactionsStore } from "../stores/transactionStore";
+import { transactionsStore, loadingStore, errorStore } from "../stores/transactionStore";
 import { CircularProgress, Typography, Box } from "@mui/material";
 import RecommendationCard from "./RecommendationCard";
 
 function Recommendations() {
   const transactions = useStore(transactionsStore);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        await new Promise((resolve, reject) => {
-          setTimeout(() => {
-            const failed = Math.random() < 0.3;
-            if (failed) {
-              reject(new Error("Failed to load transactions"));
-            } else {
-              resolve();
-            }
-          }, 1000);
-        });
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const loading = useStore(loadingStore);
+  const error = useStore(errorStore);
 
   if (loading) {
     return <CircularProgress />;
@@ -44,6 +20,7 @@ function Recommendations() {
   const expenses = transactions.filter(
     (transaction) => transaction.type === "expense"
   );
+  
 
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();

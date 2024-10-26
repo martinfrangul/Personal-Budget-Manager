@@ -33,6 +33,11 @@ function TransactionList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const uniqueCategories = useMemo(() => {
+    const categories = transactions.map((transaction) => transaction.category);
+    return Array.from(new Set(categories)).filter((category) => category); // Filtramos valores vacíos o nulos
+  }, [transactions]);
+
   const deleteTransaction = useCallback((id) => {
     storeDeleteTransaction(id);
   }, []);
@@ -51,8 +56,8 @@ function TransactionList() {
     return transactions
       .filter(
         (transaction) =>
-          (filterCategory ? transaction.category === filterCategory : true) &&
-          (filterType ? transaction.type === filterType : true)
+            (filterCategory === "" || filterCategory === "All" || transaction.category === filterCategory) &&
+        (filterType === "" || filterType === "All" || transaction.type === filterType)
       )
       .sort((a, b) => {
         if (sortField === "amount") {
@@ -84,11 +89,17 @@ function TransactionList() {
           <InputLabel id="filter-category-label">Category</InputLabel>
           <Select
             labelId="filter-category-label"
+            id="filter-category"
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
+            label="Category"
           >
-            <MenuItem value="">All</MenuItem>
-            {/* Agregar otras categorías dinámicamente */}
+            <MenuItem value="All">All</MenuItem>
+            {uniqueCategories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -96,10 +107,12 @@ function TransactionList() {
           <InputLabel id="filter-type-label">Type</InputLabel>
           <Select
             labelId="filter-type-label"
+            id="filter-type"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
+            label="Type"
           >
-            <MenuItem value="">All</MenuItem>
+            <MenuItem value="All">All</MenuItem>
             <MenuItem value="income">Income</MenuItem>
             <MenuItem value="expense">Expense</MenuItem>
           </Select>
@@ -109,10 +122,12 @@ function TransactionList() {
           <InputLabel id="sort-field-label">Sort By</InputLabel>
           <Select
             labelId="sort-field-label"
+            id="sort-field"
             value={sortField}
             onChange={(e) => setSortField(e.target.value)}
+            label="Sort by"
           >
-            <MenuItem value="">None</MenuItem>
+            <MenuItem value="None">None</MenuItem>
             <MenuItem value="amount">Amount</MenuItem>
             <MenuItem value="date">Date</MenuItem>
           </Select>
@@ -148,7 +163,7 @@ function TransactionList() {
                       variant="outlined"
                       color="primary"
                       onClick={() => handleEdit(transaction)}
-                      className="hover:bg-red-400 transition-colors duration-200" 
+                      className="hover:bg-red-400 transition-colors duration-200"
                     >
                       Edit
                     </Button>
