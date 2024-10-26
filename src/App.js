@@ -22,6 +22,8 @@ import AnalysisGraph from './components/AnalysisGraph';
 import Statistics from './components/Statistics';
 import BalanceOverTime from './components/BalanceOverTime';
 import RecentTransactions from './components/RecentTransactions';
+import MonthlyChart from './components/MonthlyChart';
+
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
@@ -73,6 +75,8 @@ function App() {
                 <Route path="/statistics" element={<Statistics />} />
                 <Route path="/balance" element={<BalanceOverTime />} />
                 <Route path="/recentTransactions" element={<RecentTransactions />} />
+                <Route path="/monthlyChart" element={<MonthlyChart />} />
+
 
               </Route>
 

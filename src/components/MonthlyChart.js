@@ -1,4 +1,7 @@
 import React from "react";
+import { useStore } from "@nanostores/react";
+import { transactionsStore } from "../stores/transactionStore";
+
 import {
   LineChart,
   Line,
@@ -9,8 +12,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function MonthlyChart({ transactions }) {
+function MonthlyChart() {
   const dataMap = {};
+  const transactions = useStore(transactionsStore);
 
   transactions.forEach((transaction) => {
     const date = new Date(transaction.date);
