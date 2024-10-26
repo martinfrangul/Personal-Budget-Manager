@@ -13,11 +13,17 @@ import {
 function BalanceOverTime() {
     const transactions = useStore(transactionsStore);
 
-    // Instructions:
-    // - Sort the transactions by date to display the balance over time.
-    // - Calculate the cumulative balance as you iterate through the sorted transactions.
-    // - Each object in the 'data' array should be of the form: { date, Balance }, where 'date' is the transaction date and 'Balance' is the cumulative balance at that date.
-    const data = []; // Replace with logic to calculate cumulative balance for each date.
+
+    const sortedTransactions = transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    let cumulativeBalance = 0;
+    const data = sortedTransactions.map(transaction => {
+        cumulativeBalance += transaction.amount;
+        return {
+            date: transaction.date,
+            Balance: cumulativeBalance
+        };
+    });
 
     return (
         <ResponsiveContainer width="100%" height={300}>

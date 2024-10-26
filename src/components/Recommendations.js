@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { transactionsStore } from "../stores/transactionStore";
-import {
-  CircularProgress,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { CircularProgress, Typography, Box } from "@mui/material";
+import RecommendationCard from "./RecommendationCard";
 
 function Recommendations() {
   const transactions = useStore(transactionsStore);
@@ -18,11 +13,9 @@ function Recommendations() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Simulando una llamada a la API o carga de datos
         await new Promise((resolve, reject) => {
-          // Simulación de un fallo aleatorio
           setTimeout(() => {
-            const failed = Math.random() < 0.3; // 30% de probabilidad de error
+            const failed = Math.random() < 0.3;
             if (failed) {
               reject(new Error("Failed to load transactions"));
             } else {
@@ -101,11 +94,7 @@ function Recommendations() {
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h5">Recommendations</Typography>
-      <Card sx={{ mt: 2, p: 2 }}>
-        <CardContent>
-          <Typography variant="body1">{message}</Typography>
-        </CardContent>
-      </Card>
+      <RecommendationCard message={message} />
     </Box>
   );
 }

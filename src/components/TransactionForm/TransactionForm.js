@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { transactionsStore } from "../stores/transactionStore";
+import { transactionsStore, addTransaction } from "../../stores/transactionStore";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   Grid,
   Box,
 } from "@mui/material";
-import { categoryKeywords } from "../constants/categoryKeywords";
-import { allCategories } from "../constants/categories";
+import TransactionField from "./TransactionField";
+import TransactionTypeSelect from "./TransactionTypeSelect";
+import TransactionCategorySelect from "./TransactionCategorySelect";
+import { categoryKeywords } from "../../constants/categoryKeywords";
 
 function TransactionForm({ transactionToEdit, onClose }) {
   const transactions = useStore(transactionsStore);
@@ -72,7 +69,7 @@ function TransactionForm({ transactionToEdit, onClose }) {
         )
       );
     } else {
-      transactionsStore.set([...transactions, transaction]);
+      addTransaction(transaction);
     }
 
     onClose();
@@ -92,102 +89,51 @@ function TransactionForm({ transactionToEdit, onClose }) {
         <DialogContent id="transaction-dialog-description">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <TransactionField
                 label="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                fullWidth
-                margin="normal"
                 required
-                name="description"
                 id="description"
-                inputProps={{ "aria-describedby": "description-help" }}
               />
-              <Box component="span" id="description-help" hidden>
-                Brief description of the transaction
-              </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TransactionField
                 label="Amount (€)"
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                fullWidth
-                margin="normal"
                 required
+                id="amount"
                 inputProps={{
                   min: 0,
                   step: "0.01",
-                  "aria-describedby": "amount-help",
                 }}
-                name="amount"
-                id="amount"
               />
-              <Box component="span" id="amount-help" hidden>
-                Enter the transaction amount in euros
-              </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth margin="normal" required>
-                <InputLabel id="type-label">Type</InputLabel>
-                <Select
-                  labelId="type-label"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  label="Type"
-                  name="type"
-                  inputProps={{ "aria-describedby": "type-help" }}
-                  id="type"
-                >
-                  <MenuItem value="income">Income</MenuItem>
-                  <MenuItem value="expense">Expense</MenuItem>
-                </Select>
-                <Box component="span" id="type-help" hidden>
-                  Select the type of transaction (income or expense)
-                </Box>
-              </FormControl>
+              <TransactionTypeSelect
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth margin="normal" required>
-                <InputLabel id="category-label">Category</InputLabel>
-                <Select
-                  labelId="category-label"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  label="Category"
-                  name="category"
-                  inputProps={{ "aria-describedby": "category-help" }}
-                  id="category"
-                >
-                  {allCategories.map((cat) => (
-                    <MenuItem key={cat} value={cat}>
-                      {cat}
-                    </MenuItem>
-                  ))}
-                  <MenuItem value="Other Expenses">Other Expenses</MenuItem>
-                </Select>
-                <Box component="span" id="category-help" hidden>
-                  Select a category for the transaction
-                </Box>
-              </FormControl>
+              <TransactionCategorySelect
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TransactionField
                 label="Date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                fullWidth
-                margin="normal"
                 required
-                name="date"
                 id="date"
-                inputProps={{ "aria-describedby": "date-help" }}
               />
-              <Box component="span" id="date-help" hidden>
-                Select the date of the transaction
-              </Box>
             </Grid>
           </Grid>
         </DialogContent>

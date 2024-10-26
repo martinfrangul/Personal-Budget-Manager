@@ -10,15 +10,17 @@ import TransactionList from './components/TransactionList';
 import Analysis from './components/Analysis';
 import Settings from './components/Settings';
 import Footer from './components/Footer';
-import SupportPage from './components/SupportPage';
+import SupportPage from './components/SupportPage/SupportPage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute'; // Import for route protection
 import { authStore } from './stores/authStore'; // Import auth store for authentication state
 import { useStore } from '@nanostores/react'; // Nanostores to track auth
 import BudgetAlert from './components/BudgetAlert'; // Importar BudgetAlert
-import TransactionForm from './components/TransactionForm';
+import TransactionForm from './components/TransactionForm/TransactionForm';
 import Recommendations from './components/Recommendations';
+import AnalysisGraph from './components/AnalysisGraph';
+import Statistics from './components/Statistics';
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
@@ -63,10 +65,12 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/transactions" element={<TransactionList />} />
                 <Route path="/analysis" element={<Analysis />} />
+                <Route path="/analysisGraph" element={<AnalysisGraph />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/support" element={<SupportPage />} />
                 <Route path="/transactionForm" element={<TransactionForm />} />
                 <Route path="/recommendations" element={<Recommendations />} />
+                <Route path="/statistics" element={<Statistics />} />
               </Route>
 
               {/* Public routes */}

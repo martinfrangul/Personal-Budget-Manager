@@ -1,36 +1,60 @@
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 function MonthlyChart({ transactions }) {
-    // Instructions:
-    // - Group transactions by month.
-    // - For each month, calculate the total income and expense.
-    const dataMap = {}; // Implement logic to group transactions by month and calculate totals
+  const dataMap = {};
 
-    transactions.forEach((t) => {
-        // Instructions:
-        // - Extract the month and year from each transaction's date.
-        // - Check if the month is already in `dataMap`. If not, initialize it.
-        // - Accumulate the income and expense amounts based on the transaction type.
-    });
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.date);
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    const monthYear = `${month} ${year}`;
 
-    // Instructions:
-    // - Convert the data map into an array and sort it by date.
-    // - The array should contain objects with the following structure: { month, income, expense }
-    const data = []; // Implement logic to convert dataMap to a sorted array
+    if (!dataMap[monthYear]) {
+      dataMap[monthYear] = { month: monthYear, income: 0, expense: 0 };
+    }
 
+    if (transaction.type === "income") {
+      dataMap[monthYear].income += transaction.amount;
+    } else if (transaction.type === "expense") {
+      dataMap[monthYear].expense += transaction.amount;
+    }
+  });
+
+  const data = Object.values(dataMap).sort((a, b) => {
+    const [monthA, yearA] = a.month.split(" ");
+    const [monthB, yearB] = b.month.split(" ");
     return (
-        <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="income" stroke="#82ca9d" name="Income" />
-                <Line type="monotone" dataKey="expense" stroke="#8884d8" name="Expense" />
-            </LineChart>
-        </ResponsiveContainer>
+      new Date(yearA, new Date(`${monthA} 1`).getMonth()) -
+      new Date(yearB, new Date(`${monthB} 1`).getMonth())
     );
+  });
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={data}>
+        <XAxis dataKey="month" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="income" stroke="#82ca9d" name="Income" />
+        <Line
+          type="monotone"
+          dataKey="expense"
+          stroke="#8884d8"
+          name="Expense"
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
 }
 
 export default MonthlyChart;
