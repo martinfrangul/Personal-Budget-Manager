@@ -17,6 +17,8 @@ import ProtectedRoute from './components/ProtectedRoute'; // Import for route pr
 import { authStore } from './stores/authStore'; // Import auth store for authentication state
 import { useStore } from '@nanostores/react'; // Nanostores to track auth
 import BudgetAlert from './components/BudgetAlert'; // Importar BudgetAlert
+import TransactionForm from './components/TransactionForm';
+import Recommendations from './components/Recommendations';
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
@@ -63,6 +65,8 @@ function App() {
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/support" element={<SupportPage />} />
+                <Route path="/transactionForm" element={<TransactionForm />} />
+                <Route path="/recommendations" element={<Recommendations />} />
               </Route>
 
               {/* Public routes */}

@@ -29,7 +29,7 @@ function LoginPage() {
       email === defaultCredentials.email &&
       password === defaultCredentials.password
     ) {
-      login();
+      login({ email, password });
       navigate("/");
     } else {
       setError("Invalid credentials! Please try again.");

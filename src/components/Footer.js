@@ -1,36 +1,93 @@
-import React from 'react';
-import { Box, Typography, Paper, IconButton, InputBase, Button } from '@mui/material';
+import React from "react";
+import {
+  Box,
+  Typography,
+  Paper,
+  IconButton,
+  InputBase,
+  Button,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
 
 const Footer = () => {
-    return (
-        <Box component="footer">
-            {/* Search bar */}
-            <Box>
-                <Paper component="form">
-                    <IconButton aria-label="search">
-                        {/* Add the search icon here */}
-                    </IconButton>
-                    <InputBase placeholder="Find your branch..." />
-                    <Button type="submit">Search</Button>
-                </Paper>
-            </Box>
+  return (
+    <Box
+      component="footer"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        p: 3,
+        bgcolor: "primary.main",
+        color: "white",
+        mt: 4,
+      }}
+    >
+      {/* Barra de búsqueda */}
+      <Box sx={{ width: "100%", maxWidth: 600 }}>
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <IconButton aria-label="search">
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Find your branch..."
+          />
+          <Button type="submit" sx={{ p: "10px" }}>
+            Search
+          </Button>
+        </Paper>
+      </Box>
 
-            <Typography>
-                © {new Date().getFullYear()} Personal Finance Assistant
-            </Typography>
+      {/* Derechos de autor */}
+      <Typography variant="body2">
+        © {new Date().getFullYear()} Personal Finance Assistant
+      </Typography>
 
-            {/* Social media icons */}
-            {/* Instructions:
-                - Add IconButtons for Facebook, Twitter, and Instagram.
-                - Ensure each icon button links to the appropriate social media page.
-                - Use the respective Material UI icons for Facebook, Twitter, and Instagram. */}
-            <Box>
-                {/* IconButton for Facebook */}
-                {/* IconButton for Twitter */}
-                {/* IconButton for Instagram */}
-            </Box>
-        </Box>
-    );
+      {/* Iconos de redes sociales */}
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <IconButton
+          aria-label="Facebook"
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          color="inherit"
+        >
+          <FacebookIcon />
+        </IconButton>
+        <IconButton
+          aria-label="Twitter"
+          href="https://twitter.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          color="inherit"
+        >
+          <TwitterIcon />
+        </IconButton>
+        <IconButton
+          aria-label="Instagram"
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          color="inherit"
+        >
+          <InstagramIcon />
+        </IconButton>
+      </Box>
+    </Box>
+  );
 };
 
 export default Footer;

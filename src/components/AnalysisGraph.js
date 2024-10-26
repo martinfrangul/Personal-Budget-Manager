@@ -14,18 +14,20 @@ import {
 function AnalysisGraph() {
     const transactions = useStore(transactionsStore);
 
-    // Unique categories
-    // Instructions:
-    // - Extract unique categories from the transactions
-    // - This should gather all the categories used in the 'category' field of the transactions
-    const categories = []; // Add logic to extract unique categories from transactions
-
-    // Chart data
-    // Instructions:
-    // - Aggregate income and expense data for each category
-    // - For each category, calculate the total 'income' and 'expense'
-    // - The data array should return an object like this for each category: { category, Income, Expense }
-    const data = []; // Add logic to calculate income and expense for each category
+    const categories = [...new Set(transactions.map(transaction => transaction.category))];
+    const data = categories.map(category => {
+        const categoryTransactions = transactions.filter(transaction => transaction.category === category);
+    
+        const income = categoryTransactions
+            .filter(transaction => transaction.type === 'income')
+            .reduce((total, transaction) => total + transaction.amount, 0);
+    
+        const expense = categoryTransactions
+            .filter(transaction => transaction.type === 'expense')
+            .reduce((total, transaction) => total + transaction.amount, 0);
+    
+        return { category, Income: income, Expense: expense };
+    });
 
     return (
         <ResponsiveContainer width="100%" height={400}>
