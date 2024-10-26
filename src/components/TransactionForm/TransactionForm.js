@@ -62,6 +62,8 @@ function TransactionForm({ transactionToEdit, onClose }) {
       date,
     };
 
+    console.log("Submitting transaction:", transaction);
+
     if (transactionToEdit) {
       transactionsStore.set(
         transactions.map((t) =>
