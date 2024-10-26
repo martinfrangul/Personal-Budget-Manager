@@ -1,15 +1,9 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-} from 'recharts';
+
+// Carga diferida del componente del gráfico
+const ChartComponent = lazy(() => import('./ChartComponent'));
 
 function AnalysisGraph() {
     const transactions = useStore(transactionsStore);
@@ -30,16 +24,9 @@ function AnalysisGraph() {
     });
 
     return (
-        <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data}>
-                <XAxis dataKey="category" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Income" stackId="a" fill="#82ca9d" />
-                <Bar dataKey="Expense" stackId="a" fill="#8884d8" />
-            </BarChart>
-        </ResponsiveContainer>
+        <Suspense fallback={<div>Loading chart...</div>}>
+            <ChartComponent data={data} />
+        </Suspense>
     );
 }
 
