@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import for route pr
 import { authStore } from "./stores/authStore"; // Import auth store for authentication state
 import { useStore } from "@nanostores/react"; // Nanostores to track auth
 import AlertBanner from "./components/AlertBanner";
+import ForgotPasswordPage from "./components/ForgotPasswordPage";
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
@@ -70,6 +71,7 @@ function App() {
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             </Routes>
           </Container>
           <Footer /> {/* Always stick footer to the bottom */}
