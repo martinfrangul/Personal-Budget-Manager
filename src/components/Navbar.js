@@ -16,6 +16,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Link } from "react-router-dom";
 import { useStore } from "@nanostores/react";
 import { authStore, logout } from "../stores/authStore";
+import logo from "../assets/caixabank-icon.png";
+import logoColor from "../assets/caixabank-icon-blue.png";
 
 const Navbar = ({ toggleTheme, isDarkMode }) => {
   const { isAuthenticated, user } = useStore(authStore);
@@ -39,14 +41,21 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
     <>
       <AppBar position="static">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <IconButton
-            edge="start"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ height: "40px", marginRight: "16px" }}
+            />
+            <IconButton
+              edge="start"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
 
           {/* Enlaces de navegación principales */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
@@ -58,10 +67,12 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
                 <Button component={Link} to="/settings" color="inherit">
                   Settings
                 </Button>
-                <Button component={Link} to="/analysisGraph" color="inherit">
-                  Analysis Graphs
+                <Button component={Link} to="/transactions" color="inherit">
+                  Transactions
                 </Button>
-
+                <Button component={Link} to="/analysis" color="inherit">
+                  Analysis
+                </Button>
                 <Button color="inherit" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -102,9 +113,14 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Navigation
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <img
+              src={logoColor}
+              alt="Logo"
+              style={{ height: "40px", marginRight: "8px" }}
+            />
+            <Typography variant="h6">Navigation</Typography>
+          </Box>
           {isAuthenticated ? (
             <>
               <Button component={Link} to="/" color="inherit" fullWidth>

@@ -4,21 +4,30 @@ import { Download as DownloadIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
 const ExportButton = React.memo(function ExportButton({ data, filename, headers, label }) {
-    const handleExport = useCallback(() => {
-        // Convert data to CSV format
-        // Instructions:
-        // - Use the convertArrayOfObjectsToCSV function to convert the data array to a CSV string.
-        // - Create a Blob object with CSV content
-        // - Create a temporary link to download the file
-    }, [data, filename, headers]);
+    const convertArrayOfObjectsToCSV = (data, headers) => {
+        if (!data || data.length === 0) return null;
 
-    // Function to convert object array to CSV
-    // Instructions:
-    // - Implement logic to convert an array of objects into a CSV string.
-    // - Ensure the headers are used to extract the correct fields from each object in the data array.
-    const convertArrayOfObjectsToCSV = () => {
-        // Implement the conversion logic here
+        // Crear la fila de encabezados y las filas de datos en CSV
+        const headerRow = headers.join(',');
+        const dataRows = data.map(row =>
+            headers.map(fieldName => JSON.stringify(row[fieldName] || '')).join(',')
+        );
+        return [headerRow, ...dataRows].join('\n');
     };
+
+    const handleExport = useCallback(() => {
+        const csv = convertArrayOfObjectsToCSV(data, headers);
+
+        if (!csv) return;
+        
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute('download', filename || 'data.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }, [data, filename, headers]);
 
     return (
         <Button

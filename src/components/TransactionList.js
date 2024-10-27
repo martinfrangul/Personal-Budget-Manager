@@ -19,10 +19,11 @@ import {
   FormControl,
   Box,
   Typography,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
 import TransactionForm from "../components/TransactionForm/TransactionForm";
 import RecentTransactions from "../components/RecentTransactions";
+import TransactionRow from "../components/TransactionRow";
 
 function TransactionList() {
   const transactions = useStore(transactionsStore);
@@ -58,8 +59,12 @@ function TransactionList() {
     return transactions
       .filter(
         (transaction) =>
-            (filterCategory === "" || filterCategory === "All" || transaction.category === filterCategory) &&
-        (filterType === "" || filterType === "All" || transaction.type === filterType)
+          (filterCategory === "" ||
+            filterCategory === "All" ||
+            transaction.category === filterCategory) &&
+          (filterType === "" ||
+            filterType === "All" ||
+            transaction.type === filterType)
       )
       .sort((a, b) => {
         if (sortField === "amount") {
@@ -70,7 +75,6 @@ function TransactionList() {
         return 0;
       });
   }, [transactions, filterCategory, filterType, sortField]);
-
 
   const paginatedTransactions = useMemo(() => {
     const startIndex = page * rowsPerPage;
@@ -87,7 +91,7 @@ function TransactionList() {
   };
 
   return (
-    <Box sx={{ mt: 4, p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
+    <Box sx={{ mt: 4, p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
       <Typography variant="h4" gutterBottom>
         Transaction List
       </Typography>
@@ -102,7 +106,7 @@ function TransactionList() {
       </Button>
 
       {/* Filters */}
-      <Box sx={{ display: { xs: 'block', sm: 'flex' }, gap: 2, my: 2 }}>
+      <Box sx={{ display: { xs: "block", sm: "flex" }, gap: 2, my: 2 }}>
         <FormControl sx={{ minWidth: 120 }}>
           <InputLabel id="filter-category-label">Category</InputLabel>
           <Select
@@ -166,41 +170,18 @@ function TransactionList() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {paginatedTransactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.description}</TableCell>
-                <TableCell>{transaction.amount.toFixed(2)}</TableCell>
-                <TableCell>{transaction.type}</TableCell>
-                <TableCell>{transaction.category}</TableCell>
-                <TableCell>
-                  {new Date(transaction.date).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleEdit(transaction)}
-                      sx={{ flex: 1 }} // Ocupa espacio igual
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => deleteTransaction(transaction.id)}
-                      sx={{ flex: 1 }} // Ocupa espacio igual
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
+            {paginatedTransactions.map((transaction) => (
+              <TransactionRow
+                key={transaction.id}
+                transaction={transaction}
+                onEdit={() => handleEdit(transaction)}
+                onDelete={() => deleteTransaction(transaction.id)}
+              />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       <RecentTransactions />
 
       {/* Controles de paginación */}

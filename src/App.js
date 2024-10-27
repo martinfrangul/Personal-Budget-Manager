@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline, Box, Container } from "@mui/material";
@@ -16,12 +14,6 @@ import RegisterPage from "./components/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import for route protection
 import { authStore } from "./stores/authStore"; // Import auth store for authentication state
 import { useStore } from "@nanostores/react"; // Nanostores to track auth
-import Recommendations from "./components/Recommendations";
-import AnalysisGraph from "./components/AnalysisGraph";
-import Statistics from "./components/Statistics";
-import BalanceOverTime from "./components/BalanceOverTime";
-import RecentTransactions from "./components/RecentTransactions";
-import MonthlyChart from "./components/MonthlyChart";
 import AlertBanner from "./components/AlertBanner";
 
 function App() {
@@ -49,7 +41,7 @@ function App() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <CssBaseline /> {/* Apply the correct baseline for the theme */}
+      <CssBaseline />
       <Router>
         <Box
           sx={{
@@ -71,17 +63,8 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/transactions" element={<TransactionList />} />
                 <Route path="/analysis" element={<Analysis />} />
-                <Route path="/analysisGraph" element={<AnalysisGraph />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/support" element={<SupportPage />} />
-                <Route path="/recommendations" element={<Recommendations />} />
-                <Route path="/statistics" element={<Statistics />} />
-                <Route path="/balance" element={<BalanceOverTime />} />
-                <Route
-                  path="/recentTransactions"
-                  element={<RecentTransactions />}
-                />
-                <Route path="/monthlyChart" element={<MonthlyChart />} />
               </Route>
 
               {/* Public routes */}

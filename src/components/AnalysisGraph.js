@@ -1,12 +1,20 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
 
-// Carga diferida del componente del gráfico
 const ChartComponent = lazy(() => import('./ChartComponent'));
 
 function AnalysisGraph() {
     const transactions = useStore(transactionsStore);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        setIsLoading(transactions.length === 0);
+    }, [transactions]);
+
+    if (isLoading) {
+        return <div>Cargando datos...</div>; 
+    }
 
     const categories = [...new Set(transactions.map(transaction => transaction.category))];
     const data = categories.map(category => {

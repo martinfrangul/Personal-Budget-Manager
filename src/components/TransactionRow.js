@@ -10,12 +10,10 @@ function TransactionRow({ transaction, onEdit, onDelete }) {
             <TableCell>{transaction.category}</TableCell>
             <TableCell>{new Date(transaction.date).toLocaleDateString('en-US')}</TableCell>
             <TableCell>
-                {/* Add functionality for the edit button */}
-                <Button>
+                <Button onClick={onEdit} variant="outlined" color="primary">
                     Edit
                 </Button>
-                {/* Add functionality for the delete button */}
-                <Button>
+                <Button onClick={onDelete} variant="outlined" color="secondary" sx={{ ml: 1, color: 'red', borderColor: 'red', '&:hover': { borderColor: 'darkred', backgroundColor: 'rgba(255, 0, 0, 0.1)' } }}>
                     Delete
                 </Button>
             </TableCell>
