@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, Box } from "@mui/material";
 
-const TransactionField = ({ label, value, onChange, required, id, type = "text", inputProps }) => (
+const TransactionField = ({ label, value, onChange, id, type = "text", inputProps }) => (
   <div>
     <TextField
       label={label}
@@ -9,7 +9,6 @@ const TransactionField = ({ label, value, onChange, required, id, type = "text",
       onChange={onChange}
       fullWidth
       margin="normal"
-      required={required}
       name={label.toLowerCase()}
       id={id}
       type={type}

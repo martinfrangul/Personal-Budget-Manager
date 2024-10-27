@@ -19,8 +19,10 @@ import {
   FormControl,
   Box,
   Typography,
+  TablePagination
 } from "@mui/material";
 import TransactionForm from "../components/TransactionForm/TransactionForm";
+import RecentTransactions from "../components/RecentTransactions";
 
 function TransactionList() {
   const transactions = useStore(transactionsStore);
@@ -69,8 +71,23 @@ function TransactionList() {
       });
   }, [transactions, filterCategory, filterType, sortField]);
 
+
+  const paginatedTransactions = useMemo(() => {
+    const startIndex = page * rowsPerPage;
+    return filteredTransactions.slice(startIndex, startIndex + rowsPerPage);
+  }, [filteredTransactions, page, rowsPerPage]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mt: 4, p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
       <Typography variant="h4" gutterBottom>
         Transaction List
       </Typography>
@@ -79,12 +96,13 @@ function TransactionList() {
         variant="contained"
         color="primary"
         onClick={() => setOpenForm(true)}
+        sx={{ mb: 2 }}
       >
         Add Transaction
       </Button>
 
       {/* Filters */}
-      <Box sx={{ display: "flex", gap: 2, my: 2 }}>
+      <Box sx={{ display: { xs: 'block', sm: 'flex' }, gap: 2, my: 2 }}>
         <FormControl sx={{ minWidth: 120 }}>
           <InputLabel id="filter-category-label">Category</InputLabel>
           <Select
@@ -135,7 +153,7 @@ function TransactionList() {
       </Box>
 
       {/* Table of transactions */}
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ mb: 2 }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -148,7 +166,7 @@ function TransactionList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredTransactions.map((transaction) => (
+          {paginatedTransactions.map((transaction) => (
               <TableRow key={transaction.id}>
                 <TableCell>{transaction.description}</TableCell>
                 <TableCell>{transaction.amount.toFixed(2)}</TableCell>
@@ -158,12 +176,12 @@ function TransactionList() {
                   {new Date(transaction.date).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: "flex", gap: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
                     <Button
                       variant="outlined"
                       color="primary"
                       onClick={() => handleEdit(transaction)}
-                      className="hover:bg-red-400 transition-colors duration-200"
+                      sx={{ flex: 1 }} // Ocupa espacio igual
                     >
                       Edit
                     </Button>
@@ -171,6 +189,7 @@ function TransactionList() {
                       variant="outlined"
                       color="secondary"
                       onClick={() => deleteTransaction(transaction.id)}
+                      sx={{ flex: 1 }} // Ocupa espacio igual
                     >
                       Delete
                     </Button>
@@ -181,6 +200,19 @@ function TransactionList() {
           </TableBody>
         </Table>
       </TableContainer>
+      
+      <RecentTransactions />
+
+      {/* Controles de paginación */}
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]} // Opciones de filas por página
+        component="div"
+        count={filteredTransactions.length} // Total de transacciones filtradas
+        rowsPerPage={rowsPerPage} // Filas por página actual
+        page={page} // Página actual
+        onPageChange={handleChangePage} // Cambiar de página
+        onRowsPerPageChange={handleChangeRowsPerPage} // Cambiar filas por página
+      />
 
       {/* Form Modal */}
       {openForm && (

@@ -1,30 +1,44 @@
 import { atom } from 'nanostores';
 
-export const userSettingsStore = atom({
+// Cargar la configuración desde el almacenamiento local
+const savedSettings = JSON.parse(localStorage.getItem('userSettings')) || {
   totalBudgetLimit: 1000,
   categoryLimits: {},
   alertsEnabled: true,
   budgetExceeded: false,
-});
+};
 
+export const userSettingsStore = atom(savedSettings);
 
 if (process.env.NODE_ENV === 'development') {
-    window.userSettingsStore = userSettingsStore;
+  window.userSettingsStore = userSettingsStore;
 }
 
+const saveSettingsToLocalStorage = (settings) => {
+  localStorage.setItem('userSettings', JSON.stringify(settings));
+};
+
 export const updateTotalBudgetLimit = (newLimit) => {
-  userSettingsStore.set({ ...userSettingsStore.get(), totalBudgetLimit: newLimit });
+  const updatedSettings = { ...userSettingsStore.get(), totalBudgetLimit: newLimit };
+  userSettingsStore.set(updatedSettings);
+  saveSettingsToLocalStorage(updatedSettings); 
 };
 
 export const updateCategoryLimits = (newLimits) => {
-  userSettingsStore.set({ ...userSettingsStore.get(), categoryLimits: newLimits });
+  const updatedSettings = { ...userSettingsStore.get(), categoryLimits: newLimits };
+  userSettingsStore.set(updatedSettings);
+  saveSettingsToLocalStorage(updatedSettings); 
 };
 
 export const toggleAlertsEnabled = () => {
   const currentState = userSettingsStore.get();
-  userSettingsStore.set({ ...currentState, alertsEnabled: !currentState.alertsEnabled });
+  const updatedSettings = { ...currentState, alertsEnabled: !currentState.alertsEnabled };
+  userSettingsStore.set(updatedSettings);
+  saveSettingsToLocalStorage(updatedSettings); 
 };
 
 export const updateBudgetExceeded = (exceeded) => {
-  userSettingsStore.set({ ...userSettingsStore.get(), budgetExceeded: exceeded });
+  const updatedSettings = { ...userSettingsStore.get(), budgetExceeded: exceeded };
+  userSettingsStore.set(updatedSettings);
+  saveSettingsToLocalStorage(updatedSettings); 
 };

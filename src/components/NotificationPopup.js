@@ -7,7 +7,7 @@ const NotificationPopup = ({ open, message, onClose }) => {
             open={open}
             autoHideDuration={6000}
             onClose={onClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }} 
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
         >
             <Alert onClose={onClose} severity="warning" sx={{ width: '300px' }}>
                 {message}

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { transactionsStore, addTransaction } from "../../stores/transactionStore";
+import {
+  transactionsStore,
+  addTransaction,
+} from "../../stores/transactionStore";
 import {
   Dialog,
   DialogTitle,
@@ -14,6 +17,7 @@ import TransactionField from "./TransactionField";
 import TransactionTypeSelect from "./TransactionTypeSelect";
 import TransactionCategorySelect from "./TransactionCategorySelect";
 import { categoryKeywords } from "../../constants/categoryKeywords";
+import NotificationPopup from "../NotificationPopup";
 
 function TransactionForm({ transactionToEdit, onClose }) {
   const transactions = useStore(transactionsStore);
@@ -23,13 +27,22 @@ function TransactionForm({ transactionToEdit, onClose }) {
   const [type, setType] = useState("expense");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const assignCategory = (desc) => {
-    for (const keyword in categoryKeywords) {
-      if (desc.toLowerCase().includes(keyword.toLowerCase())) {
-        return categoryKeywords[keyword];
+    const lowerDesc = desc.toLowerCase();
+
+    for (const category in categoryKeywords) {
+      const keywords = categoryKeywords[category];
+
+      for (const keyword of keywords) {
+        if (lowerDesc.includes(keyword.toLowerCase())) {
+          return category;
+        }
       }
     }
+
     return "Other Expenses";
   };
 
@@ -48,8 +61,32 @@ function TransactionForm({ transactionToEdit, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!description || !amount || !type || !category || !date) {
-      alert("Please fill in all fields.");
+    if (!description) {
+      setNotificationMessage("Description is required.");
+      setNotificationOpen(true);
+      return;
+    }
+
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+      setNotificationMessage("Amount must be a positive number.");
+      setNotificationOpen(true);
+      return;
+    }
+
+    const validCategories = Object.keys(categoryKeywords);
+    if (!category || !validCategories.includes(category)) {
+      setNotificationMessage("Please select a valid category.");
+      setNotificationOpen(true);
+      return;
+    }
+
+    const selectedDate = new Date(date);
+    const today = new Date();
+    if (!date || selectedDate > today) {
+      setNotificationMessage(
+        "Please enter a valid date that is not in the future."
+      );
+      setNotificationOpen(true);
       return;
     }
 
@@ -95,7 +132,6 @@ function TransactionForm({ transactionToEdit, onClose }) {
                 label="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                required
                 id="description"
               />
             </Grid>
@@ -169,6 +205,11 @@ function TransactionForm({ transactionToEdit, onClose }) {
           </Box>
         </DialogActions>
       </form>
+      <NotificationPopup
+      open={notificationOpen}
+      message={notificationMessage}
+      onClose={() => setNotificationOpen(false)}
+    />
     </Dialog>
   );
 }

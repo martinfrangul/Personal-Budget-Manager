@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from "@mui/material";
 
 function RecentTransactions() {
@@ -19,9 +20,11 @@ function RecentTransactions() {
     .slice(0, 5);
 
   return (
-    <div>
-      <h3>Recent Transactions</h3>
-      <TableContainer component={Paper}>
+    <Paper sx={{ p: 2, mt: 4 }}>
+      <Typography variant="h6" gutterBottom>
+        Recent Transactions
+      </Typography>
+      <TableContainer>
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -36,20 +39,16 @@ function RecentTransactions() {
             {recentTransactions.map((transaction, index) => (
               <TableRow key={index}>
                 <TableCell>{transaction.description}</TableCell>
-                <TableCell>
-                  {transaction.amount.toFixed(2)}{" "}
-                </TableCell>
+                <TableCell>{transaction.amount.toFixed(2)}</TableCell>
                 <TableCell>{transaction.type}</TableCell>
                 <TableCell>{transaction.category}</TableCell>
-                <TableCell>
-                  {new Date(transaction.date).toLocaleDateString()}
-                </TableCell>{" "}
+                <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Paper>
   );
 }
 

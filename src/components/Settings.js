@@ -8,7 +8,6 @@ import {
   updateBudgetExceeded,
 } from "../stores/userSettingsStore";
 import {
-  budgetAlertStore,
   updateBudgetAlert,
   resetBudgetAlert,
 } from "../stores/budgetAlertStore";
@@ -27,7 +26,6 @@ import { expenseCategories } from "../constants/categories";
 
 function Settings() {
   const userSettings = useStore(userSettingsStore);
-  const budgetAlert = useStore(budgetAlertStore);
 
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
@@ -154,11 +152,6 @@ function Settings() {
         </Alert>
       )}
 
-      {budgetAlert.isVisible && (
-        <Alert severity="warning" sx={{ mt: 2 }}>
-          {budgetAlert.message}
-        </Alert>
-      )}
     </Box>
   );
 }

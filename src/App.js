@@ -1,49 +1,48 @@
 // src/App.js
 
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Box, Container } from '@mui/material';
-import { lightTheme, darkTheme } from './theme'; // Import both themes
-import Navbar from './components/Navbar';
-import Dashboard from './components/Dashboard';
-import TransactionList from './components/TransactionList';
-import Analysis from './components/Analysis';
-import Settings from './components/Settings';
-import Footer from './components/Footer';
-import SupportPage from './components/SupportPage/SupportPage';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
-import ProtectedRoute from './components/ProtectedRoute'; // Import for route protection
-import { authStore } from './stores/authStore'; // Import auth store for authentication state
-import { useStore } from '@nanostores/react'; // Nanostores to track auth
-import BudgetAlert from './components/BudgetAlert'; // Importar BudgetAlert
-import Recommendations from './components/Recommendations';
-import AnalysisGraph from './components/AnalysisGraph';
-import Statistics from './components/Statistics';
-import BalanceOverTime from './components/BalanceOverTime';
-import RecentTransactions from './components/RecentTransactions';
-import MonthlyChart from './components/MonthlyChart';
-
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider, CssBaseline, Box, Container } from "@mui/material";
+import { lightTheme, darkTheme } from "./theme"; // Import both themes
+import Navbar from "./components/Navbar";
+import Dashboard from "./components/Dashboard";
+import TransactionList from "./components/TransactionList";
+import Analysis from "./components/Analysis";
+import Settings from "./components/Settings";
+import Footer from "./components/Footer";
+import SupportPage from "./components/SupportPage/SupportPage";
+import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import for route protection
+import { authStore } from "./stores/authStore"; // Import auth store for authentication state
+import { useStore } from "@nanostores/react"; // Nanostores to track auth
+import Recommendations from "./components/Recommendations";
+import AnalysisGraph from "./components/AnalysisGraph";
+import Statistics from "./components/Statistics";
+import BalanceOverTime from "./components/BalanceOverTime";
+import RecentTransactions from "./components/RecentTransactions";
+import MonthlyChart from "./components/MonthlyChart";
+import AlertBanner from "./components/AlertBanner";
 
 function App() {
   const auth = useStore(authStore); // Get authentication status from auth store
 
   // State to track dark mode
   const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark'
+    localStorage.getItem("theme") === "dark"
   );
 
   // Toggle theme function
   const toggleTheme = () => {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    localStorage.setItem("theme", newTheme ? "dark" : "light");
   };
 
   // Use effect to apply theme on load
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
       setIsDarkMode(true);
     }
   }, []);
@@ -54,17 +53,21 @@ function App() {
       <Router>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh', // Ensures footer is at the bottom
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh", // Ensures footer is at the bottom
           }}
         >
           <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
           <Container sx={{ flex: 1, mt: 4 }}>
-            <BudgetAlert /> {/* Mostrar BudgetAlert aquí */}
+            <AlertBanner />
             <Routes>
               {/* Protected routes */}
-              <Route element={<ProtectedRoute isAuthenticated={auth.isAuthenticated} />}>
+              <Route
+                element={
+                  <ProtectedRoute isAuthenticated={auth.isAuthenticated} />
+                }
+              >
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/transactions" element={<TransactionList />} />
                 <Route path="/analysis" element={<Analysis />} />
@@ -74,10 +77,11 @@ function App() {
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/statistics" element={<Statistics />} />
                 <Route path="/balance" element={<BalanceOverTime />} />
-                <Route path="/recentTransactions" element={<RecentTransactions />} />
+                <Route
+                  path="/recentTransactions"
+                  element={<RecentTransactions />}
+                />
                 <Route path="/monthlyChart" element={<MonthlyChart />} />
-
-
               </Route>
 
               {/* Public routes */}

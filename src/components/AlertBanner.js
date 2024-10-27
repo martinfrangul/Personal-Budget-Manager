@@ -2,26 +2,30 @@ import React from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
 import { userSettingsStore } from '../stores/userSettingsStore';
+import { authStore } from '../stores/authStore';
 import { Alert, Collapse } from '@mui/material';
 
 function AlertBanner() {
     const transactions = useStore(transactionsStore);
     const userSettings = useStore(userSettingsStore);
+    const auth = useStore(authStore);
 
-    // Extract the necessary values from user settings (budget limits, category limits, alerts status).
     const { totalBudgetLimit, categoryLimits, alertsEnabled } = userSettings;
 
-    // If alerts are disabled in the settings, return null to avoid rendering the component.
-    if (!alertsEnabled) return null;
+    if (!auth.isAuthenticated || !alertsEnabled) return null;
 
-    // Calculate the total expenses from the transaction data.
-    const totalExpenses = 0; // Replace with logic to calculate total expenses.
+    const totalExpenses = transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
 
-    // Check if the total expenses exceed the total budget limit.
-    const overTotalBudget = false; // Replace with logic to compare totalExpenses and totalBudgetLimit.
 
-    // Calculate expenses per category and check if any category limit has been exceeded.
-    const exceededCategories = []; // Replace with logic to check which categories exceeded their limits.
+    const overTotalBudget = totalExpenses > totalBudgetLimit;
+
+    const exceededCategories = Object.keys(categoryLimits).filter((category) => {
+        const categoryExpenses = transactions
+            .filter((transaction) => transaction.category === category)
+            .reduce((sum, transaction) => sum + transaction.amount, 0);
+        return categoryExpenses > categoryLimits[category];
+    });
+
 
     return (
         <div>
