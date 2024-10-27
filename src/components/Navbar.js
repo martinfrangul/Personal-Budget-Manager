@@ -73,6 +73,9 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
                 <Button component={Link} to="/analysis" color="inherit">
                   Analysis
                 </Button>
+                <Button component={Link} to="/support" color="inherit">
+                  Support page
+                </Button>
                 <Button color="inherit" onClick={handleLogout}>
                   Logout
                 </Button>
