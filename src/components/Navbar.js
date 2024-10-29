@@ -125,36 +125,45 @@ const Navbar = () => {
             />
             <Typography variant="h6">Navigation</Typography>
           </Box>
-          {isAuthenticated ? (
-            <>
-              <Button component={Link} to="/" color="inherit" fullWidth>
-                Dashboard
-              </Button>
-              <Button
-                component={Link}
-                to="/transactions"
-                color="inherit"
-                fullWidth
-              >
-                Transactions
-              </Button>
-              <Button component={Link} to="/settings" color="inherit" fullWidth>
-                Settings
-              </Button>
-              <Button color="inherit" fullWidth onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button component={Link} to="/login" color="inherit" fullWidth>
-                Login
-              </Button>
-              <Button component={Link} to="/register" color="inherit" fullWidth>
-                Register
-              </Button>
-            </>
-          )}
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {isAuthenticated ? (
+              <>
+                <Button component={Link} to="/" color="inherit">
+                  Dashboard
+                </Button>
+                <Button component={Link} to="/settings" color="inherit">
+                  Settings
+                </Button>
+                <Button component={Link} to="/transactions" color="inherit">
+                  Transactions
+                </Button>
+                <Button component={Link} to="/analysis" color="inherit">
+                  Analysis
+                </Button>
+                <Button component={Link} to="/support" color="inherit">
+                  Support page
+                </Button>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button component={Link} to="/login" color="inherit" fullWidth>
+                  Login
+                </Button>
+                <Button
+                  component={Link}
+                  to="/register"
+                  color="inherit"
+                  fullWidth
+                >
+                  Register
+                </Button>
+              </>
+            )}
+          </Box>
         </Box>
       </Drawer>
     </>
