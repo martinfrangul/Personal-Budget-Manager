@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import backgroundImage from '../assets/bgmaps.png';
 
 const Footer = () => {
   return (
@@ -25,6 +26,10 @@ const Footer = () => {
         bgcolor: "primary.main",
         color: "white",
         mt: 4,
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: '200px',
       }}
     >
       {/* Barra de búsqueda */}
@@ -52,7 +57,7 @@ const Footer = () => {
       </Box>
 
       {/* Derechos de autor */}
-      <Typography variant="body2">
+      <Typography variant="body2" sx={{ color: "black" }}>
         © {new Date().getFullYear()} Personal Finance Assistant
       </Typography>
 
@@ -63,7 +68,7 @@ const Footer = () => {
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          color="inherit"
+          sx={{ color: "black" }}
         >
           <FacebookIcon />
         </IconButton>
@@ -72,7 +77,7 @@ const Footer = () => {
           href="https://twitter.com"
           target="_blank"
           rel="noopener noreferrer"
-          color="inherit"
+          sx={{ color: "black" }}
         >
           <TwitterIcon />
         </IconButton>
@@ -81,7 +86,7 @@ const Footer = () => {
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          color="inherit"
+          sx={{ color: "black" }}
         >
           <InstagramIcon />
         </IconButton>

@@ -19,7 +19,7 @@ import { authStore, logout } from "../stores/authStore";
 import logo from "../assets/caixabank-icon.png";
 import logoColor from "../assets/caixabank-icon-blue.png";
 
-const Navbar = ({ toggleTheme, isDarkMode }) => {
+const Navbar = () => {
   const { isAuthenticated, user } = useStore(authStore);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
