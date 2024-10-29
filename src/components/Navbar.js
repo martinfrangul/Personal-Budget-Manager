@@ -52,6 +52,7 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
               aria-label="menu"
               onClick={toggleDrawer(true)}
               color="inherit"
+              sx={{ display: { xs: "block", md: "none" } }}
             >
               <MenuIcon />
             </IconButton>

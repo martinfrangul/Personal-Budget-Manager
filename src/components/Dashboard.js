@@ -78,7 +78,7 @@ function Dashboard() {
               <Typography variant="h6" gutterBottom>
                 Total Income
               </Typography>
-              <Typography variant="h5" data-testid="total-income">
+              <Typography variant="h5" data-testid="total-income" sx={{ color: 'green' }}>
                 {totalIncome.toFixed(2)} €
               </Typography>
             </Paper>
@@ -88,7 +88,7 @@ function Dashboard() {
               <Typography variant="h6" gutterBottom>
                 Total Expenses
               </Typography>
-              <Typography variant="h5" data-testid="total-expenses">
+              <Typography variant="h5" data-testid="total-expenses" sx={{ color: 'red' }}>
                 {totalExpense.toFixed(2)} €
               </Typography>
             </Paper>
@@ -98,7 +98,7 @@ function Dashboard() {
               <Typography variant="h6" gutterBottom>
                 Balance
               </Typography>
-              <Typography variant="h5" data-testid="balance">
+              <Typography variant="h5" data-testid="balance" sx={{ fontWeight: 'bold' }}>
                 {balance.toFixed(2)} €
               </Typography>
             </Paper>
